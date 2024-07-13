@@ -1,22 +1,31 @@
 var generateParenthesis = function (n) {
   let result = [];
-  let size = 0;
-  function bt(current, openCount, closeCount) {
-    if (current.length === 2 * n) {
-      result.push(current);
+  function bt(index, parenthesis, left, right) {
+    if (index === n) {
+      if(left === right)
+      result.push(parenthesis);
       return;
     }
-    if (openCount < 3) {
-      bt(current+"(", openCount+1, closeCount);
+   
+    if (left < n) {
+      left++;
+      parenthesis = parenthesis + "(";
+      bt(index + 1, parenthesis, left,right);
+      parenthesis = parenthesis.slice(0, -1);
+     
     }
-    if (closeCount < openCount) {
-      bt(current+")", openCount, closeCount + 1);
+    left--;
+    right++;
+    if(right <= left){
+      parenthesis = parenthesis + ")";
+      bt(index + 1, parenthesis, left,right);
+      parenthesis = parenthesis.slice(0, -1);
     }
+    right--;
   }
-
-  bt('', 0, 0);
+  bt(0, "", 0, 0);
   console.log(JSON.stringify(result));
 };
 
-let n = 3;
+let n = 6;
 generateParenthesis(n);
